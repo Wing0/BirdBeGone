@@ -75,12 +75,15 @@ def take_action(last_action):
 
 def play_sound(path):
     if pyg:
+        print 'Audio from pygame'
         pygame.mixer.init()
         pygame.mixer.music.load(path)
+        pygame.mixer.music.set_volume(1.0)
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() is True:
             continue
     else:
+        print 'Audio from pyaudio'
         f = wave.open(path)
         p = pyaudio.PyAudio()
         stream = p.open(
