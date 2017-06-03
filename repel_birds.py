@@ -1,10 +1,15 @@
 import numpy as np
 import cv2
 import time
-import pyaudio
-import wave
-from os.path import join
+pyg = False
+try:
+    import pygame
+    pyg = True
+except ImportError:
+    import pyaudio
+    import wave
 
+from os.path import join
 from camera import Camera, FILE_DIRECTORY
 
 DEBUG = False
@@ -66,21 +71,28 @@ def take_action(last_action):
 
 
 def play_sound(path):
-    f = wave.open(path)
-    p = pyaudio.PyAudio()
-    stream = p.open(
-        format=p.get_format_from_width(f.getsampwidth()),
-        channels=f.getnchannels(),
-        rate=f.getframerate(),
-        output=True)
+    if pyg:
+        pygame.mixer.init()
+        pygame.mixer.music.load(path)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() is True:
+            continue
+    else:
+        f = wave.open(path)
+        p = pyaudio.PyAudio()
+        stream = p.open(
+            format=p.get_format_from_width(f.getsampwidth()),
+            channels=f.getnchannels(),
+            rate=f.getframerate(),
+            output=True)
 
-    data = f.readframes(chunk)
-    while data:
-        stream.write(data)
         data = f.readframes(chunk)
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
+        while data:
+            stream.write(data)
+            data = f.readframes(chunk)
+        stream.stop_stream()
+        stream.close()
+        p.terminate()
 
 
 path = join(FILE_DIRECTORY, "sound.wav")
