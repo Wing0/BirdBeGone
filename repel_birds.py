@@ -7,6 +7,7 @@ from os.path import join
 
 from camera import Camera, FILE_DIRECTORY
 
+DEBUG = False
 history = []
 
 
@@ -123,5 +124,6 @@ while True:
         print 'ACTION!'
         last_time = time.time()
         play_sound(path)
-    show_image(
-        img_mod, time=1, destroy=False)
+    if DEBUG:
+        show_image(
+            img_mod, time=1, destroy=False)
