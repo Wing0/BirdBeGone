@@ -122,7 +122,7 @@ while True:
         hull = cv2.convexHull(contours[-1])
         hull_mask = np.ones(img.shape) * 0.8
         hull_mask = cv2.drawContours(hull_mask, [hull], -1, [1, 1, 1], -1)
-        img_mod = np.array(img.astype(np.float32) * hull_mask, dtype=np.uint8)
+        img_mod = np.array(img.astype(float) * hull_mask, dtype=np.uint8)
         movement = True
         if cv2.contourArea(contours[-1]) > human_threshold:
             human = True
