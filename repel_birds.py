@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import time
+import random
 pyg = False
 try:
     import pygame
@@ -19,6 +20,10 @@ history = []
 
 if not os.path.exists('img'):
     os.makedirs('img')
+
+if not os.path.exists('sounds'):
+    os.makedirs('sounds')
+
 
 def get_scale(image):
     max_dimensions = (750, 1200)
@@ -161,7 +166,10 @@ while True:
     if take_action(last_time) is True:
         print 'ACTION!'
         last_time = time.time()
-        play_sound(path)
+        sound_files = [
+            f for f in os.listdir('sounds')
+            if isfile(join('sounds', f)) and '.wav' in f]
+        play_sound(join('sounds', random.choice(sound_files)))
     if DEBUG:
         show_image(
             img_mod, time=1, destroy=False)
