@@ -131,7 +131,7 @@ while True:
     if len(history) > 2:
         if history[-1][1] != history[-2][1] or (
                 history[-1][2] != history[-2][2]):
-            print time.time() - history[-1][0], history[-1][1:]
+            print  time.time() - (start - history[-1][0]), history[-1][1:]
     if take_action(last_time) is True:
         print 'ACTION!'
         last_time = time.time()
