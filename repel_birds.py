@@ -10,7 +10,6 @@ from camera import Camera, FILE_DIRECTORY
 history = []
 
 
-@time_it
 def get_scale(image):
     max_dimensions = (750, 1200)
     dims = image.shape
@@ -22,7 +21,6 @@ def get_scale(image):
     return scale
 
 
-@time_it
 def show_image(image, text='Image', time=0, destroy=True):
     scale = get_scale(image)
     resized_image = image.copy()
@@ -34,7 +32,6 @@ def show_image(image, text='Image', time=0, destroy=True):
     return k
 
 
-@time_it
 def add_history(movement, human, start):
     global history
     keep_in_memory = 5 * 60  # seconds
@@ -49,7 +46,6 @@ def add_history(movement, human, start):
                     break
 
 
-@time_it
 def take_action(last_action):
     min_duration = 3
     wait_time = 4
