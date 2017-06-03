@@ -48,7 +48,7 @@ def add_history(movement, human, start):
 
 def take_action(last_action):
     min_duration = 3
-    wait_time = 4
+    wait_time = 30
 
     if time.time() - last_action < wait_time:
         return False
@@ -63,13 +63,15 @@ def take_action(last_action):
             return True
     return False
 
+
 def play_sound(path):
     f = wave.open(path)
     p = pyaudio.PyAudio()
-    stream = p.open(format = p.get_format_from_width(f.getsampwidth()),
-                channels = f.getnchannels(),
-                rate = f.getframerate(),
-                output = True)
+    stream = p.open(
+        format=p.get_format_from_width(f.getsampwidth()),
+        channels=f.getnchannels(),
+        rate=f.getframerate(),
+        output=True)
 
     data = f.readframes(chunk)
     while data:
@@ -83,13 +85,7 @@ def play_sound(path):
 path = join(FILE_DIRECTORY, "sound.wav")
 chunk = 1024
 
-
-
-
-
-
-
-bg_subtractor = cv2.createBackgroundSubtractorMOG2(history=1000)
+bg_subtractor = cv2.createBackgroundSubtractorMOG2()
 c = Camera(camera_type='opencv', camera_index=0, resolution=(1920, 1080))
 kernel = np.ones((3, 3), np.uint8)
 detection_threshold = 5000
@@ -129,4 +125,3 @@ while True:
         play_sound(path)
     show_image(
         img_mod, time=1, destroy=False)
-
