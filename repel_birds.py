@@ -50,7 +50,7 @@ def add_history(movement, human, start):
         diff = history[-1][0] - history[0][0]
         if diff > keep_in_memory + delete_buffer:
             for i in range(len(history)):
-                if history[-1] - history[i] < keep_in_memory:
+                if history[-1][0] - history[i][0] < keep_in_memory:
                     history = history[i:]
                     break
 
