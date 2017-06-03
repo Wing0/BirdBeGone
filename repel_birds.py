@@ -9,12 +9,15 @@ except ImportError:
     import pyaudio
     import wave
 
-from os.path import join
+import os
+from os.path import join, isfile
 from camera import Camera, FILE_DIRECTORY
 
 DEBUG = False
 history = []
 
+if not os.path.exists('img'):
+    os.makedirs('img')
 
 def get_scale(image):
     max_dimensions = (750, 1200)
@@ -97,6 +100,7 @@ def play_sound(path):
 
 path = join(FILE_DIRECTORY, "sound.wav")
 chunk = 1024
+file_limit = 500
 
 bg_subtractor = cv2.createBackgroundSubtractorMOG2()
 c = Camera(camera_type='opencv', camera_index=0, resolution=(1920, 1080))
@@ -106,7 +110,9 @@ human_threshold = 100000
 
 start = time.time()
 last_time = time.time() - 30
+loop = 0
 while True:
+    loop += 1
     movement = False
     human = False
     img = c.capture(cv_pre_frames=1)
@@ -131,7 +137,19 @@ while True:
     if len(history) > 2:
         if history[-1][1] != history[-2][1] or (
                 history[-1][2] != history[-2][2]):
-            print  time.time() - (start - history[-1][0]), history[-1][1:]
+            secs = time.time() - (start - history[-1][0])
+            print secs, history[-1][1:]
+            cv2.imwrite('img/image_%s%s.jpg' % (
+                '000000'[:-len(str(int(secs)))], int(secs)), img_mod)
+    if loop % 300 == 0:
+        files = [
+            f for f in os.listdir('img')
+            if isfile(join('img', f)) and '.jpg' in f]
+        if len(files) > file_limit:
+            files.sort()
+            delete = files[:-file_limit]
+            for f in delete:
+                os.remove(join('img', f))
     if take_action(last_time) is True:
         print 'ACTION!'
         last_time = time.time()
