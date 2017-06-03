@@ -12,6 +12,7 @@ except ImportError:
 import os
 from os.path import join, isfile
 from camera import Camera, FILE_DIRECTORY
+import datetime
 
 DEBUG = False
 history = []
@@ -56,6 +57,9 @@ def add_history(movement, human, start):
 
 
 def take_action(last_action):
+    now = datetime.datetime.now()
+    if now.hour < 8 or now.hour > 22:
+        return False
     min_duration = 3
     wait_time = 30
 
@@ -104,8 +108,9 @@ def play_sound(path):
 path = join(FILE_DIRECTORY, "sound.wav")
 chunk = 1024
 file_limit = 500
+memory = 250
 
-bg_subtractor = cv2.createBackgroundSubtractorMOG2()
+bg_subtractor = cv2.createBackgroundSubtractorMOG2(history=memory)
 c = Camera(camera_type='opencv', camera_index=0, resolution=(1920, 1080))
 kernel = np.ones((3, 3), np.uint8)
 detection_threshold = 5000
