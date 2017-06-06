@@ -115,7 +115,7 @@ chunk = 1024
 file_limit = 500
 memory = 250
 
-bg_subtractor = cv2.createBackgroundSubtractorMOG2(history=memory)
+bg_subtractor = cv2.createBackgroundSubtractorMOG2(history=memory, varThreshold=32)
 c = Camera(camera_type='opencv', camera_index=0, resolution=(1920, 1080))
 kernel = np.ones((3, 3), np.uint8)
 detection_threshold = 5000
@@ -152,7 +152,9 @@ while True:
                 history[-1][2] != history[-2][2]):
             secs = time.time() - (start - history[-1][0])
             print secs, history[-1][1:]
-            cv2.imwrite('img/image_%s%s.jpg' % (
+            import time
+            cv2.imwrite('img/image_%s_%s%s.jpg' % (
+                time.strftime("%Y%m%d-%H%M%S"),
                 '000000'[:-len(str(int(secs)))], int(secs)), img_mod)
     if loop % 300 == 0:
         files = [
