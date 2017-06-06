@@ -63,7 +63,7 @@ def add_history(movement, human, start):
 
 def take_action(last_action):
     now = datetime.datetime.now()
-    if now.hour < 8 or now.hour > 22:
+    if now.hour < 7 or now.hour > 22:
         return False
     min_duration = 3
     wait_time = 30
