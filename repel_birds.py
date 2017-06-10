@@ -16,6 +16,8 @@ from camera import Camera, FILE_DIRECTORY
 import datetime
 
 DEBUG = False
+threshold = 64
+
 history = []
 
 if not os.path.exists('img'):
@@ -115,7 +117,7 @@ chunk = 1024
 file_limit = 500
 memory = 250
 
-bg_subtractor = cv2.createBackgroundSubtractorMOG2(history=memory, varThreshold=32)
+bg_subtractor = cv2.createBackgroundSubtractorMOG2(history=memory, varThreshold=threshold)
 c = Camera(camera_type='opencv', camera_index=0, resolution=(1920, 1080))
 kernel = np.ones((3, 3), np.uint8)
 detection_threshold = 5000
